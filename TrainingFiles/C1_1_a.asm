@@ -1,3 +1,3 @@
-addiu $t0, $zero, 1 # t0=1
+addiu $t0, $s0, 0x15 # t0=1
 addiu $v0, $zero, 10 # to Exit the program
 syscall # exit
