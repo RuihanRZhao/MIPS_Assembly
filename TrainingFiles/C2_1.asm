@@ -2,6 +2,12 @@
 # .text assembler directive
 
 .text
+  la $t0,MY_INT_ARRAY
+  lw $t1, 4($t0)
+  add $t1,$t1,$t1
+  sw $t1,4($t0)
+
+
   addi $v0, $zero, 10     # Sets $v0 to "10" to select exit syscall
   syscall                 # Exit
 
