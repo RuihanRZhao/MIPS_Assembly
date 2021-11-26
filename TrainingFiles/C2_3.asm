@@ -29,8 +29,8 @@
 
 
 .data
-  MSG_Num_Stroge:   .asciiz     "Your Input: "
-  MSG_INPUT_PROMPT: .asciiz     "Input: "
+  MSG_Num_Stroge:   .asciiz     "\nYour Input: "
+  MSG_INPUT_PROMPT: .asciiz     "\nInput: "
   MSG_ZERO:         .asciiz     "\nIt was zero!"
   MSG_ONE:          .asciiz     "\nIt was one!"
   MSG_NEITHER:      .asciiz     "\nIt was neither!"
