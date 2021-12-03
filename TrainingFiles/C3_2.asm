@@ -7,7 +7,7 @@
     lw  $s2, 0($s2)
 
     slt $t0, $s1, $s0
-beq $t0, $zero, SKIP
+    beq $t0, $zero, SKIP
 
 
     PRINT_CHECKED:
