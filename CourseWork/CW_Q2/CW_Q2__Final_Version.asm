@@ -27,11 +27,11 @@ addi    $t7,    $zero,  0     # t6: if the letter is first of a word (0: yes, ot
 la      $t0, buffer_for_input_string
 la      $t1, buffer_for_processed_string
 Loop:
-lb      $t2,  0($t0)
+lb      $t2,    0($t0)
 beq     $t2,    $zero,  End      # if t2 == 0, go to End
 
 # Where the letter is
-bne     $t7,    $zero,  Body
+bne     $t7,    0,  Body
 jal     Head
 
 Head:
@@ -51,27 +51,67 @@ slt     $t5,    $t3,    $t2
 or      $t4,    $t5,    $t4
 beq     $t4,    $zero,  H_Legal
 
-# IF t2 is other character, go to Legal
+# If t2 is other character, go to Legal
+li      $t3,    '.'
+beq     $t2,    $t3,  H_Legal
+li      $t3,    ','
+beq     $t2,    $t3,  H_Legal
 li      $t3,    '!'
+beq     $t2,    $t3,  H_Legal
+li      $t3,    '?'
+beq     $t2,    $t3,  H_Legal
+li      $t3,    ';'
+beq     $t2,    $t3,  H_Legal
+li      $t3,    ':'
+beq     $t2,    $t3,  H_Legal
+
+# If t2 is a number, go to Legal
+li      $t3,    '0'
 slt     $t4,    $t2,    $t3
-li      $t3,    '@'
-slt     $t5,    $t3,    $t2
-or      $t4,    $t5,    $t4
-beq     $t4,    $zero,  H_Legal
-li      $t3,    '{'
-slt     $t4,    $t2,    $t3
-li      $t3,    '~'
+li      $t3,    '9'
 slt     $t5,    $t3,    $t2
 or      $t4,    $t5,    $t4
 beq     $t4,    $zero,  H_Legal
 
+# If t2 is a blank
+addi    $t6,    $zero,  0
+addi    $t7,    $t7,    0
+
+sb      $t2,    0($t1)
+addi    $t0,    $t0,    1
+addi    $t1,    $t1,    1
+jal     Loop
 
 
 Body:
-Beq    $t6,     $zero,  B_ILLegal
+# If t2 is other character, go to Legal
+li      $t3,    '.'
+beq     $t2,    $t3,  B_Punctuation
+li      $t3,    ','
+beq     $t2,    $t3,  B_Punctuation
+li      $t3,    '!'
+beq     $t2,    $t3,  B_Punctuation
+li      $t3,    '?'
+beq     $t2,    $t3,  B_Punctuation
+li      $t3,    ';'
+beq     $t2,    $t3,  B_Punctuation
+li      $t3,    ':'
+beq     $t2,    $t3,  B_Punctuation
+
+beq     $t6,     0,  B_Illegal
 jal    B_Legal
 
-B_ILLegal:
+
+B_Punctuation:
+addi    $t7,    $zero,    0
+# stroge the value and move cursor to next palce
+sb      $t2,    0($t1)
+addi    $t0,    $t0,    1
+addi    $t1,    $t1,    1
+jal     Loop
+
+
+B_Illegal:
 addi    $t7,    $t7,    1
 addi    $t0,    $t0,    1
 # If t2 != ' ', check next
@@ -79,6 +119,7 @@ bne     $t2,    ' ',    Loop
 # If t2 == ' ', change t7 to start next word
 addi    $t7, $zero, 0
 jal     Loop
+
 
 B_Legal:
 addi    $t7,    $t7,    1
