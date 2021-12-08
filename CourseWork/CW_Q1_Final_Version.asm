@@ -27,29 +27,40 @@ syscall
 la      $t0, buffer_for_input_string
 la      $t1, buffer_for_processed_string
 Loop:
-
 lb      $t2,  0($t0)
-addi    $t3,  $t2,  0
 
-beq     $t2,  10,    SKIP
+beq     $t2,    $zero,  SKIP      # if t2 == 0, go to SKIP
 
-li      $t7,  'A'
-slt     $t2,  $t7,   $t4
-li      $t7,  'Z'
-slt     $t7,  $t2,   $t5
-or      $t4,  $t5,  $t4
-beq     $t4, $zero, ACT
-jal     SKIP        # jump to SKIP and save position to $ra
+# If t2 is around 'A' to 'Z', go to SKIP.
+li      $t7,    'A'
+slt     $t4,    $t2,    $t7
+li      $t7,    'Z'
+slt     $t5,    $t7,    $t2
+or      $t4,    $t5,    $t4
+beq     $t4,    $zero,  SKIP
+
+# If t2 is around 'a' to 'z', go to SKIP.
+li      $t7,    'a'
+slt     $t4,    $t2,    $t7
+li      $t7,    'z'
+slt     $t5,    $t7,    $t2
+or      $t4,    $t5,    $t4
+beq     $t4,    $zero,  SKIP
+
+# If t2 == ' ', go to SKIP
+beq     $t2,    ' ',    SKIP
+
+# Else go to ACT
+jal     ACT
 
 ACT:
-addi    $t3,  $t3,    32
-jal    SKIP        # jump to SKIP and save position to $ra
+#If t2 holds a punctuation character, go to next character
+addi    $t0,    $t0,    1
+bne     $t2,    $zero,  Loop
 
-
-# potentially do some processing on the character loaded in t2
 SKIP:
-
-sb      $t3, 0($t1)
+#If t2 holds a letter or blank, record it and go to next place
+sb      $t2, 0($t1)
 addi    $t0, $t0, 1
 addi    $t1, $t1, 1
 bne     $t2, $zero, Loop # keep going until you reach the end of the string,
