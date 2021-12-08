@@ -27,13 +27,11 @@ syscall
 la      $t0, buffer_for_input_string
 la      $t1, buffer_for_processed_string
 Loop:
-addu    $t2, $t2, 32
 
 lb      $t2, 0($t0)
-
+sb      $t2, $t2, 32
 # potentially do some processing on the character loaded in t2
 sb      $t2, 0($t1)
-
 addi    $t0, $t0, 1
 addi    $t1, $t1, 1
 bne     $t2, $zero, Loop # keep going until you reach the end of the string,
