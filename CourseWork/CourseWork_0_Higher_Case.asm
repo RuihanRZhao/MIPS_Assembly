@@ -6,15 +6,15 @@ prompt_for_output: .asciiz "Your processed string is as follows:\n"
 
 .text
 main:
-# PROMPTPING the user with a message for a string input:
+# prompting the user with a message for a string input:
 li $v0, 4
 la $a0, prompt_for_input
 syscall
 
-# READING the input string and putting it in the memory:
-## the starting address of the string is accessible as buffer_for_input_string
-## 100 is the hard-coded maximum length of the null-terminated string that is
-## going to be read from the input. So effectively, up to 99 ascii characters.
+# reading the input string and putting it in the memory:
+# the starting address of the string is accessible as buffer_for_input_string
+# 100 is the hard-coded maximum length of the null-terminated string that is
+# going to be read from the input. So effectively, up to 99 ascii characters.
 li $v0, 8
 la $a0, buffer_for_input_string
 li $a1, 100
@@ -22,18 +22,13 @@ syscall
 
 # >>>> MAKE YOUR CHANGES BELOW HERE:
 
-
 # Looping over characters of the string:
 la      $t0, buffer_for_input_string
 la      $t1, buffer_for_processed_string
 Loop:
-addu    $t2, $t2, 32
-
 lb      $t2, 0($t0)
-
 # potentially do some processing on the character loaded in t2
 sb      $t2, 0($t1)
-
 addi    $t0, $t0, 1
 addi    $t1, $t1, 1
 bne     $t2, $zero, Loop # keep going until you reach the end of the string,
