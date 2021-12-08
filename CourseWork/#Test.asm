@@ -29,11 +29,7 @@ la      $t1, buffer_for_processed_string
 Loop:
 
 lb      $t2, 0($t0)
-<<<<<<< HEAD
 sb      $t2, $t2, 32
-=======
-# add     $t2, $t2, 'a'
->>>>>>> 972864f99c75e5c1db3c8b5fe152b8f13d820f03
 # potentially do some processing on the character loaded in t2
 sb      $t2, 0($t1)
 addi    $t0, $t0, 1
