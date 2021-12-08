@@ -27,9 +27,9 @@ syscall
 la      $t0, buffer_for_input_string
 la      $t1, buffer_for_processed_string
 Loop:
-addu    $t2, $t2, 32
-lb      $t2, 0($t0)
 
+lb      $t2, 0($t0)
+add     $t2, $t2, 32
 # potentially do some processing on the character loaded in t2
 sb      $t2, 0($t1)
 addi    $t0, $t0, 1
