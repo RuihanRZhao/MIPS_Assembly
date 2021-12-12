@@ -68,8 +68,8 @@ bne     $t4, $s5, Loop_over_rows
 # Open a file for saving the processed image to:
 li $v0, 13 # system call for open file
 la $a0, output_file_name # input file name
-li $a1, 0x41 # flag for writing
-li $a2, 0x1B4 # mode is ignored
+li $a1, 1 # flag for writing
+li $a2, 0 # mode is ignored
 syscall # open a file
 addu $s0, $zero, $v0 # save the file descriptor
 
