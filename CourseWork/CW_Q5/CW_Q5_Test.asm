@@ -7,7 +7,7 @@ main:
 # Open the input file for reading the image from:
 li   $v0, 13       # system call for open file
 la   $a0, input_file_name      # input file name
-li   $a1, 0        # flag for reading
+li   $a1, 1        # flag for reading
 li   $a2, 0        # mode is ignored
 syscall            # open a file
 addu $s0, $zero, $v0      # save the file descriptor
