@@ -48,7 +48,11 @@ syscall            # close file
 
 # >>>>>>>> MAKE YOUR CHANGES BELOW THIS LINE
 
-addiu    $t0, $s2, 61
+addiu    $t0, $s2, 61 # t0: will hold the address of each byte of the image
+                      # we have added 61, since this is the size of the header
+                      # we will not touch the bytes of the header.
+                      # this is fine, as none of the tasks require changing the size
+                      # or format of the image.
 
 li  $s3, 3 # colours
 li  $s4, 128 # columns
@@ -60,14 +64,19 @@ li      $t3, 0 # column counter
 Loop_over_pixels_in_each_row: # i.e., columns
 li      $t2, 0 # colour counter (each colour represents Red-Green-Blue)
 Loop_over_colours_in_each_pixel:
-lb      $t1, 0($t0) # loading the value of the byte, representing the intensity of the corresponding RGB colour of that pixel
-# Do something with the value of the byte
-addi    $t1, $t1, 50
-slt     $t6, $t1, 255
+lbu     $t1, 0($t0) # loading the value of the byte, representing
+                    # the intensity of the corresponding RGB colour of that pixel
+                    # note that an earlier version was using lb, which does sign extension
+                    # but the 8-bits of the colour should be interpreted as unsigned
+                    # representing values from 0 to 255.
+# do something with the value of the byte
+addi    $t1, $t1, 0x32
+addi    $t7, $zero,0xff
+slt     $t6, $t7, $t1
 bne     $t6, $zero, Max
 jal     Rest
 Max:
-addi    $t1, $zero, 255
+addi    $t1, $zero, 0xff
 jal     Rest
 
 Rest:
